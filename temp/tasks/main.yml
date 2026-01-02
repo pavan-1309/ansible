@@ -5,16 +5,19 @@
   ansible.builtin.apt:
     name: nginx
     state: latest
-    update_cahce: yes
+    update_cache: yes
   when: ansible_distribution == "Ubuntu"
   notify: restart webserver
+
 - name: install webserver on amazon
   ansible.builtin.dnf:
     name: httpd
     state: present
-  when: ansible_distribution == "Amazon"
+  when: ansible_distribution == "Amazon Linux"
   notify: restart webserver
-- name : deploy to ws
-  template:
+
+- name: deploy to ws
+  ansible.builtin.template:
     src: my-config.j2
     dest: /var/www/html/index.html
+
