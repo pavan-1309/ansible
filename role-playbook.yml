@@ -1,0 +1,19 @@
+---
+- name: install webserver
+  hosts: all
+  become: true
+  vars_prompt:
+  - name: var1
+    prompt: Enter Student's Name
+    private: no
+  - name: var2
+    prompt: Enter Student's Qualification
+    private: no
+  - name: var3
+    prompt: Enter the Enrolled Course
+    private: no
+  - name: var4
+    prompt: Enter the Branch of the Institute
+    private: no
+  roles:
+    - temp

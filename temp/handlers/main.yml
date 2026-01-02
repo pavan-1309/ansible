@@ -1,0 +1,16 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for temp
+- name: restart nginx
+  listen: restart webserver
+  service:
+    name: nginx
+    state: restarted
+  when: ansible_distribution == "Ubuntu"
+- name: restart httpd
+  listen: restart webserver
+  service:
+    name: httpd
+    state: restarted
+  when: ansible_distribution == "Amazon"
+

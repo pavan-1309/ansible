@@ -1,0 +1,54 @@
+---
+- name: install webserver
+  hosts: all
+  become: true
+  vars_prompt:
+  - name: var1
+    prompt: Enter Student's Name
+    private: no
+  - name: var2
+    prompt: Enter Student's Qualification
+    private: no
+  - name: var3
+    prompt: Enter the Enrolled Course
+    private: no
+  - name: var4
+    prompt: Enter the Branch of the Institute
+    private: no
+
+  tasks:
+    - name: install nginx on ubuntu
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+      notify: webserver restart
+
+    - name: install httpd on amazon linux
+      dnf:
+        name: httpd
+        state: present
+      when: ansible_distribution == "Amazon"
+      notify: webserver restart
+    - name: deploy file
+      template:
+        src: my-config.j2
+        dest: /var/www/html/index.html
+
+
+  handlers:
+    - name: restart nginx
+      listen: webserver restart
+      service:
+        name: nginx
+        state: restarted
+      when: ansible_distribution == "Ubuntu"
+
+    - name: restart httpd
+      listen: webserver restart
+      service:
+        name: httpd
+        enabled: yes
+        state: restarted
+      when: ansible_distribution == "Amazon"

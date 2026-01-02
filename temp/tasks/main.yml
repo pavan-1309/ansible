@@ -1,0 +1,20 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for temp
+- name: install webserver on ubuntu
+  ansible.builtin.apt:
+    name: nginx
+    state: latest
+    update_cahce: yes
+  when: ansible_distribution == "Ubuntu"
+  notify: restart webserver
+- name: install webserver on amazon
+  ansible.builtin.dnf:
+    name: httpd
+    state: present
+  when: ansible_distribution == "Amazon"
+  notify: restart webserver
+- name : deploy to ws
+  template:
+    src: my-config.j2
+    dest: /var/www/html/index.html
